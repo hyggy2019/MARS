@@ -13,11 +13,11 @@ export HF_TOKEN="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"
 # CUDA device configuration
 # Usage: CUDA_VISIBLE_DEVICES=0,1,2,3 ./script.sh (to use GPUs 0-3)
 # Or set CUDA_VISIBLE_DEVICES environment variable before running
-export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0,1,2,3,4,5,6,7}
+export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0,1,2,3}
 # Default parameters
-BATCH_SIZE=${BATCH_SIZE:-15}
-GRAD_ACC=${GRAD_ACC:-4}
-GPUS=${GPUS:-8}
+BATCH_SIZE=${BATCH_SIZE:-60}
+GRAD_ACC=${GRAD_ACC:-2}
+GPUS=${GPUS:-4}
 # Global batch size to maintain (for auto-calculation of GRAD_ACC)
 GLOBAL_BATCH_SIZE=${GLOBAL_BATCH_SIZE:-480}
 
