@@ -23,7 +23,7 @@ parser.add_argument("--cuda", type=str, default="0", help="device to use")
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
 parser.add_argument('--adamw_lr', default=0.003, type=float, help='learning rate for adamw')
 parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
-parser.add_argument('--optim', '-m', type=str, choices=["adam", "adamw", "mars", "muon"], default='mars', help='optimization method, default: mars')
+parser.add_argument('--optim', '-m', type=str, choices=["adam", "adamw", "mars", "muon", "rnnps"], default='mars', help='optimization method, default: mars')
 parser.add_argument('--net', '-n', type=str, default="resnet18", help='network archtecture, choosing from "simple_cnn" or torchvision models. default: resnet18')
 parser.add_argument('--wd', default=0., type=float, help='weight decay')
 parser.add_argument('--Nepoch', default=200, type=int, help='number of epoch')
@@ -84,6 +84,7 @@ criterion = nn.CrossEntropyLoss()
 betas = (args.beta1, args.beta2)
 from optimizers.mars import MARS
 from optimizers.muon import Muon
+from optimizers.rnnps import RNNPS
 from opt import CombinedOptimizer
 from optimizers.adamw import AdamW
 if args.optim == 'adam':
@@ -93,6 +94,9 @@ elif args.optim == 'adamw':
 elif args.optim == 'muon':
     optimizer = CombinedOptimizer(model.parameters(), [AdamW, Muon], [{'lr': args.adamw_lr, 'betas': betas, 'weight_decay': args.wd},
                                                       {'lr': args.lr, 'weight_decay': 0.}])
+elif args.optim == 'rnnps':
+    optimizer = CombinedOptimizer(model.parameters(), [AdamW, RNNPS], [{'lr': args.adamw_lr, 'betas': betas, 'weight_decay': args.wd},
+                                                        {'lr': args.lr, 'weight_decay': 0.}])
 elif args.optim == 'mars':
     optimizer = MARS(model.parameters(), lr=args.lr, weight_decay = args.wd, lr_1d=args.adamw_lr)
     
